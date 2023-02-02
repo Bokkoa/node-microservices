@@ -1,0 +1,5 @@
+The container's image are getted from docker hub
+you can upload them with...
+
+docker build -t [username]/[project]
+docker push [username]/[project]
