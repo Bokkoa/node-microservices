@@ -14,7 +14,8 @@ app.get('/posts', (req, res) => {
   res.send(posts)
 })
 
-app.post('/posts', async (req, res) => {
+// changed to create because ingress needs different name routes
+app.post('/posts/create', async (req, res) => {
   const id = randomBytes(4).toString('hex')
   const { title } = req.body
 
