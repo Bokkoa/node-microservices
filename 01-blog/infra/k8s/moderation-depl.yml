@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: event-bus-depls
+  name: moderation-depls
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: event-bus
+      app: moderation
   template:
     metada:
       labels:
-        app: event-bus
+        app: moderation
       spec:
         containers:
-          - name: event-bus
-            image: bokkoa/event-bus
+          - name: moderation
+            image: bokkoa/moderation
 --- # SERVICE
 apiVersion: v1
 kind: Service
 metadata:
-  name: event-bus-srv
+  name: moderation-srv
 spec:
   selector:
-    app: event-bus
+    app: moderation
   ports:
-    - name: event-bus
+    - name: moderation
       protocol: TCP
-      port: 4005
-      targetPort: 4005
+      port: 4001
+      targetPort: 4001

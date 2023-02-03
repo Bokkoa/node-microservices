@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: event-bus-depls
+  name: query-depls
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: event-bus
+      app: query
   template:
     metada:
       labels:
-        app: event-bus
+        app: query
       spec:
         containers:
-          - name: event-bus
-            image: bokkoa/event-bus
+          - name: query
+            image: bokkoa/query
 --- # SERVICE
 apiVersion: v1
 kind: Service
 metadata:
-  name: event-bus-srv
+  name: query-srv
 spec:
   selector:
-    app: event-bus
+    app: query
   ports:
-    - name: event-bus
+    - name: query
       protocol: TCP
-      port: 4005
-      targetPort: 4005
+      port: 4002
+      targetPort: 4002

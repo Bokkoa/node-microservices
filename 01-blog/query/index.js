@@ -47,7 +47,8 @@ app.post('/events', (req, res) => {
 app.listen(4002, async () => {
   console.log('listening on http://localhost:4002');
 
-  const res = await axios.get('http://localhost:4005/events')
+  // kubernetes label turns localhost to event-bus-srv
+  const res = await axios.get('http://event-bus-srv:4005/events')
 
   for (let event of res.data) {
     console.log('Processing event: ', event.type);
