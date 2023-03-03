@@ -1,23 +1,42 @@
 import express, { Request, Response } from  'express'
-import { body, validationResult } from 'express-validator'
-import { RequestValidationError } from '../errors/request-validation-error'
-import { DatabaseConnectionError } from '../errors/database-connection-error';
+import { body } from 'express-validator'
+import { User } from '../models/user'
+import { BadRequestError } from '../errors/bad-request-error'
+import jwt from 'jsonwebtoken'
+import { validateRequest } from '../middlewares/calidate-request';
 
 const router = express.Router()
 
 router.post('/api/users/signup', [
   body('email').isEmail().withMessage('Email must be valid'),
   body('password').trim().isLength({min: 4, max: 20}).withMessage('Password mus have at least 4 characters')
-], (req: Request, res: Response) => {
-
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    throw new RequestValidationError(errors.array())
-  }
+],
+validateRequest,
+ async (req: Request, res: Response) => {
   const { email, password } = req.body
+  const existingUser = await User.findOne({email})
 
-  throw new DatabaseConnectionError()
-  res.send('Hi')
+  if (existingUser) {
+    throw new BadRequestError('Email in use')
+  }
+
+  const user = User.build({ email, password })
+  await user.save()
+
+  // Generate JWT
+
+  const userJwt = jwt.sign({
+    id: user.id,
+    email: user.email
+  }, process.env.JWT_KEY! )  // in infra kubernetes: kubectl create secret generic jwt-secret --from literal=JWT_KEY=asdf
+
+  // store in session object
+  req.session = {
+    jwt: userJwt
+  }
+
+  res.status(201).send(user)
+
 })
 
 export { router as signupRouter }
