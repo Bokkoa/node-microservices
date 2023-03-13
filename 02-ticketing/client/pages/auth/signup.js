@@ -1,0 +1,33 @@
+
+import { useState } from 'react'
+
+const signup = () => {
+  const [email, setEmail] = useState(second)
+  const [password, setPassword] = useState('')
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    console.log(email, password);
+  }
+
+  return (
+    <form onSubmit={onSubmit}>
+      <h1>signup</h1>
+      <div className="form-group">
+        <label >Email Address</label>
+        <input value={email} onChange={ e => setEmail(e.target.value)} type="text" className="form-control"/>
+      </div>
+
+      <div className="form-group">
+        <label >Password</label>
+        <input value={password}
+               onChange={e => setPassword(e.target.value)}
+               type="password" className="form-control" />
+      </div>
+
+      <button className="btn btn-primary">Sign up</button>
+    </form>
+  )
+}
+
+export default signup
