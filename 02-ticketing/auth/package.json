@@ -19,6 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@bokkoa-study/common": "^1.0.2",
     "@types/cookie-session": "^2.0.44",
     "@types/jsonwebtoken": "^9.0.1",
     "cookie-session": "^2.0.0",
